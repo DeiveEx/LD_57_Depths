@@ -2,20 +2,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GridGenerator _gridGenerator;
-    [SerializeField] private Vector3Int _gridSize;
-    [SerializeField] private TestPlayer _player;
+    [SerializeField] private World _world;
     [SerializeField] private Vector3Int _playerStartPos;
 
     private void Awake()
     {
-        _gridGenerator.GenerateGridData(_gridSize);
-        _gridGenerator.BuildGrid();
+        _world.GenerateNewWorld();
+        _world.SetBlock(_playerStartPos, BlockType.Empty);
     }
 
-    private void Start()
+    private void Update()
     {
-        _gridGenerator.SetTile(_playerStartPos, TileType.Empty);
-        _player.Move(_playerStartPos);
+        _world.UpdateChunks();
     }
 }
