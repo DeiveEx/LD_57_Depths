@@ -6,10 +6,16 @@ public class World : MonoSingleton<World>
     [SerializeField] private ChunkRenderer _chunkRendererPrefab;
     [SerializeField] private Vector3Int _chunkSize = new (10, 10, 10);
     [SerializeField] private Vector3Int _chunkAmount = new (2, 2, 2);
+    [SerializeField] private Vector2Int _minMaxRoomAmount = new (1, 5);
+    [SerializeField] private RoomDefinitionSO[] _roomDefinitions;
     
+    private BoundsInt _worldBounds;
     private Dictionary<Vector3Int, ChunkData> _chunks = new();
     private Dictionary<Vector3Int, ChunkRenderer> _chunkRenderers = new();
-    private BoundsInt _worldsBounds;
+    private Dictionary<Vector3Int, RoomInstance> _rooms = new();
+
+    public BoundsInt WorldBounds => _worldBounds;
+    public Dictionary<Vector3Int, RoomInstance> Rooms => _rooms;
 
     public void GenerateNewWorld()
     {
@@ -19,9 +25,11 @@ public class World : MonoSingleton<World>
             Destroy(chunkRenderer.gameObject);
         }
         
+        _worldBounds = new();
+        
         _chunks.Clear();
         _chunkRenderers.Clear();
-        _worldsBounds = new();
+        _rooms.Clear();
 
         for (int x = 0; x < _chunkAmount.x; x++)
         {
@@ -37,17 +45,8 @@ public class World : MonoSingleton<World>
         
         UpdateWorldBounds();
         
-        //Populate the top-most layer of the top-most chunks with air
-        var topLayer = _worldsBounds.max.y - 1;
-
-        for (int x = _worldsBounds.min.x; x < _worldsBounds.max.x; x++)
-        {
-            for (int z = _worldsBounds.min.z; z < _worldsBounds.max.z; z++)
-            {
-                var pos = new Vector3Int(x, topLayer, z);
-                SetBlock(pos, BlockType.Empty);
-            }
-        }
+        ClearTopLayer();
+        SpawnRooms();
     }
 
     public void UpdateChunks()
@@ -122,7 +121,7 @@ public class World : MonoSingleton<World>
         _chunks.Add(chunk.WorldPosition, chunk);
         _chunkRenderers.Add(chunk.WorldPosition, chunkRenderer);
         
-        //Temporarily fill the chunk with rock blocks
+        //Fill the chunk with rock blocks
         foreach (var pos in chunk.Grid.Bounds.allPositionsWithin)
         {
             var type = BlockType.Rock;
@@ -143,7 +142,7 @@ public class World : MonoSingleton<World>
             newBounds.Encapsulate(chunk.WorldPosition + chunk.Grid.Bounds.max);
         }
 
-        _worldsBounds = new(
+        _worldBounds = new(
             Mathf.FloorToInt(newBounds.min.x),
             Mathf.FloorToInt(newBounds.min.y),
             Mathf.FloorToInt(newBounds.min.z),
@@ -153,11 +152,53 @@ public class World : MonoSingleton<World>
         );
     }
 
+    private void ClearTopLayer()
+    {
+        //Populate the top-most layer of the top-most chunks with air
+        var topLayer = _worldBounds.max.y - 1;
+
+        for (int x = _worldBounds.min.x; x < _worldBounds.max.x; x++)
+        {
+            for (int z = _worldBounds.min.z; z < _worldBounds.max.z; z++)
+            {
+                var pos = new Vector3Int(x, topLayer, z);
+                SetBlock(pos, BlockType.Empty);
+            }
+        }
+    }
+
+    private void SpawnRooms()
+    {
+        int roomCount = Random.Range(_minMaxRoomAmount.x, _minMaxRoomAmount.y);
+
+        for (int i = 0; i < roomCount; i++)
+        {
+            var position = new Vector3Int(
+                Random.Range(_worldBounds.min.x, _worldBounds.max.x),
+                Random.Range(_worldBounds.min.y, _worldBounds.max.y),
+                Random.Range(_worldBounds.min.z, _worldBounds.max.z)
+            );
+            
+            var roomDefinition = _roomDefinitions[Random.Range(0, _roomDefinitions.Length)];
+
+            if (!roomDefinition.CanSpawnAt(position))
+            {
+                Debug.LogWarning($"Failed to spawn room {roomDefinition.name} at {position}");
+                continue;
+            }
+
+            var roomInstance = roomDefinition.SpawnAt(position);
+            _rooms.Add(position, roomInstance);
+        }
+
+        Debug.Log($"Spawned {_rooms.Count}/{roomCount} rooms");
+    }
+    
     private void OnDrawGizmosSelected()
     {
         if(!Application.isPlaying)
             return;
         
-        Gizmos.DrawWireCube(_worldsBounds.center, _worldsBounds.size);
+        Gizmos.DrawWireCube(_worldBounds.center, _worldBounds.size);
     }
 }
