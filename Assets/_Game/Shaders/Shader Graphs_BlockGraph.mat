@@ -51,12 +51,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Dither: 1
+    - _Dither: 1.5
     - _MaxVisibleDistance: 2.5
+    - _MaxVisibleDistanceDown: 100
+    - _MaxVisibleDistanceUp: 2
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _UseAlpha: 1
     m_Colors:
     - _MinMaxDistance: {r: 0.95, g: 0, b: 0, a: 0}
     - _PlayerPos: {r: 0.13, g: 0, b: 0, a: 0}
+    - _Visibility: {r: 1, g: 0, b: 0, a: 0}
+    - _VisibilityDown: {r: -1, g: -1, b: 0, a: 0}
+    - _VisibilityUp: {r: 1, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
