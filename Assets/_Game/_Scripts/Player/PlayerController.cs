@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -15,9 +16,6 @@ public class PlayerController : MonoBehaviour
     private float _lastActionTime;
     private Vector3Int _moveDir;
     private Vector3Int _lookDir;
-    private float _gravity;
-    private float _jumpForce;
-    private float _jumpBuffer;
     private bool _isFalling;
 
     private World World => World.Instance;
@@ -61,9 +59,6 @@ public class PlayerController : MonoBehaviour
         
         if(_moveDir.sqrMagnitude > 0)
             _lookDir = _moveDir;
-
-        if (_inputState.HasJumped)
-            _jumpBuffer = _jumpBufferTime;
     }
 
     private void TryMove()
@@ -84,7 +79,10 @@ public class PlayerController : MonoBehaviour
     private void Fall()
     {
         var downPos = CurrentGridPos + Vector3Int.down;
-        transform.position = World.GetWorldCenterPosition(downPos);
+        
+        transform.DOMove(World.GetWorldCenterPosition(downPos), 1f / _moveSpeed)
+            .Play();
+        
         _lastActionTime = Time.time;
     }
 
@@ -102,7 +100,9 @@ public class PlayerController : MonoBehaviour
             return;
         }
         
-        transform.position = World.GetWorldCenterPosition(targetPos);
+        transform.DOMove(World.GetWorldCenterPosition(targetPos), 1f / _moveSpeed)
+            .Play();
+        
         _lastActionTime = Time.time;
     }
 
@@ -111,7 +111,6 @@ public class PlayerController : MonoBehaviour
         //To be able to jump, 2 specific blocks needs to be empty:
         // - the block above the player
         // - the block in the diagonal-up of the player's facing direction
-        
         Vector3Int targetPos = CurrentGridPos + Vector3Int.up;
         
         if(!IsBlockFree(targetPos))
@@ -121,8 +120,10 @@ public class PlayerController : MonoBehaviour
         
         if(!IsBlockFree(targetPos))
             return;
+
+        transform.DOJump(World.GetWorldCenterPosition(targetPos), .5f, 1, 1f / _moveSpeed)
+            .Play();
         
-        transform.position = World.GetWorldCenterPosition(targetPos);
         _lastActionTime = Time.time;
     }
 
