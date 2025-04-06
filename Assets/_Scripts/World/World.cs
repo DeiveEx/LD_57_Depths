@@ -135,21 +135,21 @@ public class World : MonoBehaviour
 
     private void UpdateWorldBounds()
     {
-        Bounds a = new();
+        Bounds newBounds = new();
         
         foreach (var chunk in _chunks.Values)
         {
-            a.Encapsulate(chunk.WorldPosition + chunk.Grid.Bounds.min);
-            a.Encapsulate(chunk.WorldPosition + chunk.Grid.Bounds.max);
+            newBounds.Encapsulate(chunk.WorldPosition + chunk.Grid.Bounds.min);
+            newBounds.Encapsulate(chunk.WorldPosition + chunk.Grid.Bounds.max);
         }
 
         _worldsBounds = new(
-            Mathf.FloorToInt(a.min.x),
-            Mathf.FloorToInt(a.min.y),
-            Mathf.FloorToInt(a.min.z),
-            Mathf.FloorToInt(a.size.x),
-            Mathf.FloorToInt(a.size.x),
-            Mathf.FloorToInt(a.size.x)
+            Mathf.FloorToInt(newBounds.min.x),
+            Mathf.FloorToInt(newBounds.min.y),
+            Mathf.FloorToInt(newBounds.min.z),
+            Mathf.FloorToInt(newBounds.size.x),
+            Mathf.FloorToInt(newBounds.size.y),
+            Mathf.FloorToInt(newBounds.size.z)
         );
     }
 
