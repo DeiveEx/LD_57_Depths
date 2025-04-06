@@ -51,4 +51,6 @@ MonoBehaviour:
   _chunkAmount: {x: 1, y: 1, z: 1}
   _minMaxRoomAmount: {x: 5, y: 5}
   _roomDefinitions:
+  - {fileID: 11400000, guid: 27848a8875db0fc4484a6011d623ff3a, type: 2}
+  - {fileID: 11400000, guid: f1282fc791c37cd4c9ed8c61a89d76a4, type: 2}
   - {fileID: 11400000, guid: 1e7bf432f9968e14bb92b89146336c9f, type: 2}
