@@ -3,13 +3,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private static readonly int PlayerPos = Shader.PropertyToID("_PlayerPos");
-
     [SerializeField] private Transform _avatar;
     [SerializeField] private float _moveSpeed = 1;
-    [SerializeField] private float _jumpHeight = 2;
-    [SerializeField] private float _jumpDuration = 1;
-    [SerializeField] private float _jumpBufferTime = 1;
     [SerializeField] private float _digSpeed = 1;
 
     private InputState _inputState;
@@ -32,7 +27,6 @@ public class PlayerController : MonoBehaviour
         TryMove();
         TryDig();
         
-        Shader.SetGlobalVector(PlayerPos, transform.position);
         _avatar.forward = _lookDir;
     }
     
