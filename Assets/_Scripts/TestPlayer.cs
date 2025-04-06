@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,11 +5,11 @@ public class TestPlayer : MonoBehaviour
 {
     private static readonly int PlayerPos = Shader.PropertyToID("_PlayerPos");
     
-    [SerializeField] private GridGenerator _gridGenerator;
+    [SerializeField] private World _world;
 
     private void Update()
     {
-        Vector3Int currentGridPos = _gridGenerator.GetGridPosFromWorldPos(transform.position);
+        Vector3Int currentGridPos = _world.GetGridPosFromWorldPos(transform.position);
         
         if(Keyboard.current.wKey.wasPressedThisFrame)
             MoveOrDig(currentGridPos + Vector3Int.forward);
@@ -35,13 +34,13 @@ public class TestPlayer : MonoBehaviour
 
     private void MoveOrDig(Vector3Int targetPos)
     {
-        switch (_gridGenerator.GetTile(targetPos))
+        switch (_world.GetBlock(targetPos))
         {
-            case TileType.Empty:
+            case BlockType.Empty:
                 Move(targetPos);
                 break;
             
-            case TileType.Rock:
+            case BlockType.Rock:
                 Dig(targetPos);
                 break;
         }
@@ -49,11 +48,11 @@ public class TestPlayer : MonoBehaviour
 
     public void Move(Vector3Int targetPos)
     {
-        transform.position = _gridGenerator.Grid.GetWorldCenterPosition(targetPos);
+        transform.position = _world.GetWorldCenterPosition(targetPos);
     }
     
     private void Dig(Vector3Int targetPos)
     {
-        _gridGenerator.SetTile(targetPos, TileType.Empty);
+        _world.SetBlock(targetPos, BlockType.Empty);
     }
 }

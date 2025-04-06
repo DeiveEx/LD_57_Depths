@@ -8,7 +8,10 @@ public class ChunkData
 	public World WorldReference;
 	public Vector3Int WorldPosition;
 
-	public bool IsModified = false; //We can use this to decide if we want to save this chunk. Chunks that were not modified will not be saved because we can just regenerate them from scratch.
+	/// <summary>
+	/// This is true whenever the chunk suffered any modification. Chunks that were not modified can be regenerated them from scratch.
+	/// </summary>
+	public bool IsModified = false;
 
 	public ChunkData(Vector3Int chunkSize, World worldReference, Vector3Int worldPosition)
 	{
