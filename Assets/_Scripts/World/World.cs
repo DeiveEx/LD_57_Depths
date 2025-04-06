@@ -45,7 +45,7 @@ public class World : MonoSingleton<World>
         
         UpdateWorldBounds();
         
-        ClearTopLayer();
+        ConfigureBorders();
         SpawnRooms();
     }
 
@@ -57,20 +57,21 @@ public class World : MonoSingleton<World>
         }
     }
 
-    public void SetBlock(Vector3Int worldPos, BlockType type)
+    public bool TrySetBlock(Vector3Int worldPos, BlockType type)
     {
         var chunkPos = GetChunkPosFromWorldPos(worldPos);
         
         if(!_chunks.TryGetValue(chunkPos, out var chunk))
-            return;
+            return false;
 
         var localChunkPos = worldPos - chunkPos;
 
-        if (chunk.Grid.TrySetValue(localChunkPos, type))
-        {
-            chunk.IsModified = true;
-            _chunkRenderers[chunkPos].SetDirty();
-        }
+        if (!chunk.Grid.TrySetValue(localChunkPos, type))
+            return false;
+            
+        chunk.IsModified = true;
+        _chunkRenderers[chunkPos].SetDirty();
+        return true;
     }
 
     public BlockType GetBlock(Vector3Int worldPos)
@@ -152,17 +153,18 @@ public class World : MonoSingleton<World>
         );
     }
 
-    private void ClearTopLayer()
+    private void ConfigureBorders()
     {
-        //Populate the top-most layer of the top-most chunks with air
+        //Populate the top-most layer of the top-most chunks with air and the bottom-most layer with indestructible blocks
         var topLayer = _worldBounds.max.y - 1;
+        var bottomLayer = 0;
 
         for (int x = _worldBounds.min.x; x < _worldBounds.max.x; x++)
         {
             for (int z = _worldBounds.min.z; z < _worldBounds.max.z; z++)
             {
-                var pos = new Vector3Int(x, topLayer, z);
-                SetBlock(pos, BlockType.Empty);
+                TrySetBlock(new Vector3Int(x, topLayer, z), BlockType.Empty);
+                TrySetBlock(new Vector3Int(x, bottomLayer, z), BlockType.Indestructible);
             }
         }
     }
@@ -173,15 +175,24 @@ public class World : MonoSingleton<World>
 
         for (int i = 0; i < roomCount; i++)
         {
-            var position = new Vector3Int(
-                Random.Range(_worldBounds.min.x, _worldBounds.max.x),
-                Random.Range(_worldBounds.min.y, _worldBounds.max.y),
-                Random.Range(_worldBounds.min.z, _worldBounds.max.z)
-            );
-            
+            int tries = 100;
+
+            var position = new Vector3Int();
             var roomDefinition = _roomDefinitions[Random.Range(0, _roomDefinitions.Length)];
 
-            if (!roomDefinition.CanSpawnAt(position))
+            do
+            {
+                position = new Vector3Int(
+                    Random.Range(_worldBounds.min.x, _worldBounds.max.x),
+                    Random.Range(_worldBounds.min.y, _worldBounds.max.y),
+                    Random.Range(_worldBounds.min.z, _worldBounds.max.z)
+                );
+
+                tries--;
+            }
+            while (!roomDefinition.CanSpawnAt(position) && tries > 0);
+            
+            if (tries <= 0)
             {
                 Debug.LogWarning($"Failed to spawn room {roomDefinition.name} at {position}");
                 continue;

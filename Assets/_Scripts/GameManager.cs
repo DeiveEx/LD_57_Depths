@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _world.GenerateNewWorld();
-        _world.SetBlock(_playerStartPos, BlockType.Empty);
-        _player.Move(_playerStartPos);
+        _world.TrySetBlock(_playerStartPos, BlockType.Empty);
+        _player.Teleport(_playerStartPos);
     }
 
     private void Update()

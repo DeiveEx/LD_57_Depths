@@ -36,7 +36,7 @@ public class RoomDefinitionSO : ScriptableObject
 
         foreach (var pos in instance.RoomBounds.allPositionsWithin)
         {
-            World.Instance.SetBlock(pos, BlockType.Empty);
+            World.Instance.TrySetBlock(pos, BlockType.Empty);
         }
 
         return instance;
