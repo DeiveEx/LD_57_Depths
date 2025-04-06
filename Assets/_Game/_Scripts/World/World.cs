@@ -44,7 +44,6 @@ public class World : MonoSingleton<World>
         }
         
         UpdateWorldBounds();
-        
         ConfigureBorders();
         SpawnRooms();
     }
@@ -135,22 +134,12 @@ public class World : MonoSingleton<World>
 
     private void UpdateWorldBounds()
     {
-        Bounds newBounds = new();
+        _worldBounds = new();
         
         foreach (var chunk in _chunks.Values)
         {
-            newBounds.Encapsulate(chunk.WorldPosition + chunk.Grid.Bounds.min);
-            newBounds.Encapsulate(chunk.WorldPosition + chunk.Grid.Bounds.max);
+            _worldBounds = _worldBounds.Encapsulate(chunk.Grid.Bounds);
         }
-
-        _worldBounds = new(
-            Mathf.FloorToInt(newBounds.min.x),
-            Mathf.FloorToInt(newBounds.min.y),
-            Mathf.FloorToInt(newBounds.min.z),
-            Mathf.FloorToInt(newBounds.size.x),
-            Mathf.FloorToInt(newBounds.size.y),
-            Mathf.FloorToInt(newBounds.size.z)
-        );
     }
 
     private void ConfigureBorders()
@@ -183,9 +172,9 @@ public class World : MonoSingleton<World>
             do
             {
                 position = new Vector3Int(
-                    Random.Range(_worldBounds.min.x, _worldBounds.max.x),
-                    Random.Range(_worldBounds.min.y, _worldBounds.max.y),
-                    Random.Range(_worldBounds.min.z, _worldBounds.max.z)
+                    Random.Range(_worldBounds.min.x + 1, _worldBounds.max.x - roomDefinition.RoomSize.x), //Don't spawn on the edges
+                    Random.Range(_worldBounds.min.y + 1, _worldBounds.max.y - roomDefinition.RoomSize.y),
+                    Random.Range(_worldBounds.min.z + 1, _worldBounds.max.z - roomDefinition.RoomSize.z)
                 );
 
                 tries--;

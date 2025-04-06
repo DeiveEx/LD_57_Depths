@@ -7,16 +7,16 @@ public class RoomDefinitionSO : ScriptableObject
     
     public bool CanSpawnAt(Vector3Int position)
     {
-        //Can the room be fir into the world?
-        if (!World.Instance.WorldBounds.Contains(position) ||
-            !World.Instance.WorldBounds.Contains(position + RoomSize))
+        BoundsInt roomBounds = new BoundsInt(position, RoomSize);
+        
+        //Can the room be fit into the world?
+        if (!roomBounds.IsContainedBy(World.Instance.WorldBounds))
             return false;
 
         //Does the room overlaps with any other existing room?
         foreach (var room in World.Instance.Rooms.Values)
         {
-            if (room.RoomBounds.Contains(position) ||
-                room.RoomBounds.Contains(position + RoomSize))
+            if (roomBounds.Intersects(room.Bounds))
                 return false;
         }
 
@@ -29,12 +29,12 @@ public class RoomDefinitionSO : ScriptableObject
         {
             WorldPosition = position,
             Definition = this,
-            RoomBounds = new(),
+            Bounds = new(),
         };
         
-        instance.RoomBounds.SetMinMax(position, position + RoomSize);
+        instance.Bounds.SetMinMax(position, position + RoomSize);
 
-        foreach (var pos in instance.RoomBounds.allPositionsWithin)
+        foreach (var pos in instance.Bounds.allPositionsWithin)
         {
             World.Instance.TrySetBlock(pos, BlockType.Empty);
         }

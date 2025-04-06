@@ -67,8 +67,7 @@ public class ChunkRenderer : MonoBehaviour
 			new Color(0, 1, 0, .25f) : 
 			new Color(1, 0, 1, .25f);
 
-		var pos = transform.position + new Vector3(ChunkData.ChunkSize.x / 2f, ChunkData.ChunkSize.y / 2f, ChunkData.ChunkSize.z / 2f);
-		Gizmos.DrawWireCube(pos, ChunkData.ChunkSize);
+		Gizmos.DrawWireCube(ChunkData.Grid.Bounds.center, ChunkData.Grid.Bounds.size);
 	}
 #endif
 }
