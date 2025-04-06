@@ -15,15 +15,9 @@ public class ChunkRenderer : MonoBehaviour
 	[SerializeField] private bool _showGizmos;
 	
 	private Mesh _mesh;
-	private bool _isDirty = false; //Used to avoid regenerating the mesh multiple times in a single frame
+	private bool _isDirty; //Used to avoid regenerating the mesh multiple times in a single frame
 
 	public ChunkData ChunkData { get; private set; }
-
-	public bool ModifiedByPlayer
-	{
-		get => ChunkData.IsModified;
-		set => ChunkData.IsModified = value;
-	}
 
 	private void Awake()
 	{

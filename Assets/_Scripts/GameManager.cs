@@ -3,10 +3,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private World _world;
-    [SerializeField] private TestPlayer _player;
+    [SerializeField] private PlayerController _player;
     [SerializeField] private Vector3Int _playerStartPos;
 
-    private void Awake()
+    private void Start()
     {
         _world.GenerateNewWorld();
         _world.SetBlock(_playerStartPos, BlockType.Empty);

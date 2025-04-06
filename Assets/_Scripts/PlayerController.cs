@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TestPlayer : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private static readonly int PlayerPos = Shader.PropertyToID("_PlayerPos");
     

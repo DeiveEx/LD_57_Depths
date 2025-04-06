@@ -5,18 +5,16 @@ public class ChunkData
 {
 	public GenericGrid<BlockType> Grid;
 	public Vector3Int ChunkSize;
-	public World WorldReference;
 	public Vector3Int WorldPosition;
 
 	/// <summary>
 	/// This is true whenever the chunk suffered any modification. Chunks that were not modified can be regenerated them from scratch.
 	/// </summary>
-	public bool IsModified = false;
+	public bool IsModified;
 
-	public ChunkData(Vector3Int chunkSize, World worldReference, Vector3Int worldPosition)
+	public ChunkData(Vector3Int chunkSize, Vector3Int worldPosition)
 	{
 		ChunkSize = chunkSize;
-		WorldReference = worldReference;
 		WorldPosition = worldPosition;
 		Grid = new(chunkSize, Vector3.one, worldPosition);
 	}

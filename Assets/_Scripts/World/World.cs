@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class World : MonoBehaviour
+public class World : MonoSingleton<World>
 {
     [SerializeField] private ChunkRenderer _chunkRendererPrefab;
     [SerializeField] private Vector3Int _chunkSize = new (10, 10, 10);
@@ -79,26 +79,26 @@ public class World : MonoBehaviour
         var chunkPos = GetChunkPosFromWorldPos(worldPos);
 
         if(!_chunks.TryGetValue(chunkPos, out var chunk))
-            return BlockType.Indestructible;
+            return BlockType.None;
         
         var localChunkPos = worldPos - chunkPos;
 
-        if (chunk.Grid.TryGetValue(localChunkPos, out var blockType))
-            return blockType;
+        if (!chunk.Grid.TryGetValue(localChunkPos, out var blockType))
+            return BlockType.None;
 
-        return BlockType.Indestructible;
+        return blockType;
     }
 
     public Vector3Int GetGridPosFromWorldPos(Vector3 worldPos)
     {
         //If we don't clamp the position, we can use any grid to calculate
-        return _chunks[Vector3Int.zero].Grid.GetGridPosFromWorldPos(worldPos);
+        return _chunks[Vector3Int.zero].Grid.GetGridPosFromWorldPos(worldPos, false);
     }
     
     public Vector3 GetWorldCenterPosition(Vector3Int worldPos)
     {
         //If we don't clamp the position, we can use any grid to calculate
-        return _chunks[Vector3Int.zero].Grid.GetWorldCenterPosition(worldPos);
+        return _chunks[Vector3Int.zero].Grid.GetWorldCenterPosition(worldPos, false);
     }
 
     private Vector3Int GetChunkPosFromWorldPos(Vector3Int worldPos)
@@ -114,7 +114,7 @@ public class World : MonoBehaviour
 
     private void CreateChunk(Vector3Int chunkWorldPos)
     {
-        var chunk = new ChunkData(_chunkSize, this, chunkWorldPos);
+        var chunk = new ChunkData(_chunkSize, chunkWorldPos);
         var chunkRenderer = Instantiate(_chunkRendererPrefab, transform);
         chunkRenderer.transform.position = chunkWorldPos;
         chunkRenderer.name = $"Chunk_{chunkWorldPos}";

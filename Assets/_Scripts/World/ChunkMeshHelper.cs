@@ -15,7 +15,7 @@ public static class ChunkMeshHelper
 	/// <summary>
 	/// Generates the <see cref="MeshData"/> for a certain position in the chunk.
 	/// </summary>
-	public static void GenerateMeshDataForPosition(ChunkData chunk, Vector3Int position, MeshData meshData, BlockType blockType)
+	public static void GenerateMeshDataForPosition(ChunkData chunk, Vector3Int localChunkPosition, MeshData meshData, BlockType blockType)
 	{
 		if (blockType == BlockType.Empty)
 			return;
@@ -24,67 +24,64 @@ public static class ChunkMeshHelper
 		foreach (var direction in _directions)
 		{
 			//Get the neighbour block in the current direction
-			var neighbourBlockPosition = position + direction.GetVector();
-			
-			//TODO Here we would check if the block is in a different chunk. For now let's just ignore it
-			// var neighbourBlockType = Chunk.GetBlockFromChunkCoordinates(chunk, neighbourBlockPosition);
-			chunk.Grid.TryGetValue(neighbourBlockPosition, out var neighbourBlockType);
+			var neighbourBlockPosition = chunk.WorldPosition + localChunkPosition + direction.GetVector();
+			var neighbourBlockType = World.Instance.GetBlock(neighbourBlockPosition);
 
 			//Check if we should render a face for the current direction in this voxel.
 			if (neighbourBlockType == BlockType.Empty)
-				PopulateFaceData(direction, position, meshData);
+				PopulateFaceData(direction, localChunkPosition, meshData); //TODO for some reason, the faces between chunks are not being rendered
 		}
 	}
 	
 	/// <summary>
 	/// Constructs a single face facing a certain direction
 	/// </summary>
-	private static void PopulateFaceData(Direction direction, Vector3Int position, MeshData meshData)
+	private static void PopulateFaceData(Direction direction, Vector3Int localPosition, MeshData meshData)
 	{
-		PopulateFaceVertices(direction, position, meshData);
+		PopulateFaceVertices(direction, localPosition, meshData);
 		meshData.AddQuadTriangles();
 		// meshData.UV.AddRange(GetFaceUVs(direction, blockType));
 	}
 
-	private static void PopulateFaceVertices(Direction direction, Vector3Int position, MeshData data)
+	private static void PopulateFaceVertices(Direction direction, Vector3Int localPosition, MeshData data)
 	{
 		switch (direction)
 		{
 			case Direction.Up:
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 1f, position.z + 1f));
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 1f, position.z + 0f));
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 1f, position.z + 0f));
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 1f, position.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 1f, localPosition.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 1f, localPosition.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 1f, localPosition.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 1f, localPosition.z + 1f));
 				break;
 			case Direction.Down:
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 0f, position.z + 1f));
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 0f, position.z + 0f));
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 0f, position.z + 0f));
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 0f, position.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 0f, localPosition.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 0f, localPosition.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 0f, localPosition.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 0f, localPosition.z + 1f));
 				break;
 			case Direction.Left:
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 0f, position.z + 1f));
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 1f, position.z + 1f));
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 1f, position.z + 0f));
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 0f, position.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 0f, localPosition.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 1f, localPosition.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 1f, localPosition.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 0f, localPosition.z + 0f));
 				break;
 			case Direction.Right:
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 0f, position.z + 0f));
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 1f, position.z + 0f));
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 1f, position.z + 1f));
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 0f, position.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 0f, localPosition.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 1f, localPosition.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 1f, localPosition.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 0f, localPosition.z + 1f));
 				break;
 			case Direction.Forward:
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 0f, position.z + 1f));
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 1f, position.z + 1f));
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 1f, position.z + 1f));
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 0f, position.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 0f, localPosition.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 1f, localPosition.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 1f, localPosition.z + 1f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 0f, localPosition.z + 1f));
 				break;
 			case Direction.Backwards:
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 0f, position.z + 0f));
-				data.AddVertex(new Vector3(position.x + 0f, position.y + 1f, position.z + 0f));
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 1f, position.z + 0f));
-				data.AddVertex(new Vector3(position.x + 1f, position.y + 0f, position.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 0f, localPosition.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 0f, localPosition.y + 1f, localPosition.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 1f, localPosition.z + 0f));
+				data.AddVertex(new Vector3(localPosition.x + 1f, localPosition.y + 0f, localPosition.z + 0f));
 				break;
 		}
 	}
