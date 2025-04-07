@@ -13,8 +13,9 @@ public class PlayerController : MonoBehaviour
     private Vector3Int _lookDir;
     private bool _isFalling;
 
+    public Vector3Int CurrentGridPos => World.GetGridPosFromWorldPos(transform.position);
+    
     private World World => World.Instance;
-    private Vector3Int CurrentGridPos => World.GetGridPosFromWorldPos(transform.position);
     private bool IsDigging => _inputState.IsDiggingForward || _inputState.IsDiggingDown || _inputState.IsDiggingUp;
 
     private void Awake()
