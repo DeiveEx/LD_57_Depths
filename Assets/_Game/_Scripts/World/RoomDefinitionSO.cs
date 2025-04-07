@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
 public class RoomDefinitionSO : ScriptableObject
 {
     public Vector3Int RoomSize;
+    public Vector2Int MinMaxEnemies;
+    public AIController[] Enemies;
     
     public bool CanSpawnAt(Vector3Int position)
     {
@@ -25,20 +28,54 @@ public class RoomDefinitionSO : ScriptableObject
 
     public RoomInstance SpawnAt(Vector3Int position)
     {
-        var instance = new RoomInstance()
+        var room = new RoomInstance()
         {
             WorldPosition = position,
             Definition = this,
             Bounds = new(),
         };
         
-        instance.Bounds.SetMinMax(position, position + RoomSize);
+        room.Bounds.SetMinMax(position, position + RoomSize);
+        
+        DigRoom(room);
+        SpawnEnemies(room);
 
-        foreach (var pos in instance.Bounds.allPositionsWithin)
+        return room;
+    }
+
+    private void DigRoom(RoomInstance room)
+    {
+        foreach (var pos in room.Bounds.allPositionsWithin)
         {
             World.Instance.TrySetBlock(pos, BlockType.Empty);
         }
+    }
 
-        return instance;
+    private void SpawnEnemies(RoomInstance room)
+    {
+        int amount = Random.Range(MinMaxEnemies.x, MinMaxEnemies.y);
+        amount = Mathf.Min(amount, room.Bounds.GetPositionsCount());
+
+        HashSet<Vector3Int> occupiedPositions = new();
+
+        for (int i = 0; i < amount; i++)
+        {
+            Vector3Int position;
+            
+            do
+            {
+                position = room.Bounds.GetRandomPosition();
+            }
+            while(occupiedPositions.Contains(position));
+
+            SpawnSingleEnemy(position);
+            occupiedPositions.Add(position);
+        }
+    }
+
+    private void SpawnSingleEnemy(Vector3Int position)
+    {
+        var enemyPrefab = Enemies[Random.Range(0, Enemies.Length)];
+        var enemy = Instantiate(enemyPrefab, World.Instance.GetWorldCenterPosition(position), Quaternion.identity);
     }
 }

@@ -32,4 +32,18 @@ public static class BoundsIntExtensions
 
         return true;
     }
+
+    public static int GetPositionsCount(this BoundsInt bounds)
+    {
+        return bounds.size.x * bounds.size.y * bounds.size.z;
+    }
+    
+    public static Vector3Int GetRandomPosition(this BoundsInt bounds)
+    {
+        int x = Random.Range(bounds.x, bounds.xMax);
+        int y = Random.Range(bounds.y, bounds.yMax);
+        int z = Random.Range(bounds.z, bounds.zMax);
+
+        return new Vector3Int(x, y, z);
+    }
 }
