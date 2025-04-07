@@ -47,8 +47,6 @@ public struct PathFinding3DByBlockWeightJob : IJob
 
     private void FindPath(int3 startPos, int3 endPos, int3 gridSize)
     {
-        Debug.Log("Started");
-
         var nodeArray = GenerateNodeArray();
         var startNode = nodeArray[CalculateIndex(startPos, gridSize)];
         startNode.GCost = 0;
@@ -63,18 +61,14 @@ public struct PathFinding3DByBlockWeightJob : IJob
         openList.Add(startNode.Index);
 
         //Traverse the grid while there's still nods in the open list
-        Debug.Log("Traversing");
         TraverseGrid(nodeArray, openList, closedList, endNodeIndex, gridSize);
 
         //If path has a length of zero, then there's not path
-        Debug.Log("Retracing path");
         RetracePath(nodeArray, CalculatedPath, endNodeIndex);
 
         nodeArray.Dispose();
         openList.Dispose();
         closedList.Dispose();
-        
-        Debug.Log("Finished");
     }
 
     private NativeArray<BlockNode> GenerateNodeArray()

@@ -22,7 +22,6 @@ public partial class ChooseRandomPositionAround2DCircleAction : Action
             0, 
             Mathf.FloorToInt(pointInCircle.y));
 
-        Debug.Log($"HousePos: {Controller.Value.HousePosition}; Chosen Point: {intPoint}; CurrentPos: {Controller.Value.CurrentGridPos}");
         var path = PathFinderService.FindPath(Controller.Value.CurrentGridPos, intPoint);
 
         if (path.Count == 0)
