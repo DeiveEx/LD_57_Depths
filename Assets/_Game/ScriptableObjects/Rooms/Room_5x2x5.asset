@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: Room_5x2x5
   m_EditorClassIdentifier: 
   RoomSize: {x: 5, y: 2, z: 5}
+  MinMaxEnemies: {x: 2, y: 4}
+  Enemies:
+  - {fileID: 7155155845884697822, guid: 44897a538a898af41a60b6b94d50782c, type: 3}

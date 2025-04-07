@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 205564b2c37aceb49a3c87f707bba780, type: 2}
+  - {fileID: 2100000, guid: bebc3aca153b86c4abef0cdb733dc152, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 799705083972858647}
   - component: {fileID: 5226000901449169463}
   - component: {fileID: 2251329307516584294}
+  - component: {fileID: 7155155845884697822}
   m_Layer: 0
   m_Name: SimpleEnemy
   m_TagString: Untagged
@@ -127,18 +128,36 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7521805951811633605}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Graph: {fileID: -7918577187824369308, guid: c99b8db32b0e26643ab1c62ea44f11e6, type: 2}
-  m_BlackboardVariableOverridesList: []
+  m_BlackboardVariableOverridesList:
+  - rid: 8804200994667757859
+  - rid: 8804200994667757860
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 8804200994667757859
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 7521805951811633605}
+    - rid: 8804200994667757860
+      type: {class: 'BlackboardVariable`1[[AIController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 393389057316563616
+          m_Value1: 17977451046411512278
+        Name: AiController
+        m_Value: {fileID: 7155155845884697822}
 --- !u!135 &2251329307516584294
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -156,7 +175,21 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7155155845884697822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521805951811633605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66e20037cee93c04dab4fe60fbb01790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _behaviorAgent: {fileID: 5226000901449169463}
+  _moveSpeed: 1
