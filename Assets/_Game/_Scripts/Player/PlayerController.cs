@@ -146,6 +146,6 @@ public class PlayerController : MonoBehaviour
 
     private bool IsBlockFree(Vector3Int targetPos)
     {
-        return World.GetBlock(targetPos) == BlockType.Empty;
+        return World.GetBlock(targetPos).Type == BlockType.Empty;
     }
 }

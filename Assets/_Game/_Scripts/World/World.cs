@@ -63,8 +63,8 @@ public class World : MonoSingleton<World>
         }
         
         UpdateWorldBounds();
-        // ConfigureBorders();
-        // SpawnRooms();
+        ConfigureBorders();
+        SpawnRooms();
     }
 
     public void UpdateChunks()
