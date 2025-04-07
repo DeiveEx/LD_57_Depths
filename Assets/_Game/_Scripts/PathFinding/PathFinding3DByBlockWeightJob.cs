@@ -25,9 +25,6 @@ public struct PathFinding3DByBlockWeightJob : IJob
 {
     #region Fields
     
-    private const int MOVE_COST_STRAIGHT = 10;
-    private const int MOVE_COST_DIAGONAL = 14;
-
     public int3 StartPos;
     public int3 EndPos;
     public int3 GridSize;

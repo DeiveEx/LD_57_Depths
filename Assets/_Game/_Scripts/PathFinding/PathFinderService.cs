@@ -4,38 +4,50 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
-public static class AStarPathFinder
+public static class PathFinderService
 {
     public static List<Vector3Int> FindPath(Vector3Int startPos, Vector3Int endPos)
     {
         List<Vector3Int> resultPath = new();
 
-        //We gotta dispose of NativeArrays/Lists. We can link multiple usings statements like this
-        using (var path = new NativeList<int3>(Allocator.TempJob))
-        using (var weightsArray = GetChunkGridAsNodes(out var gridSize))
+        //We gotta dispose of NativeArrays/Lists
+        using var path = new NativeList<int3>(Allocator.TempJob);
+        using var weightsArray = GetChunkGridAsNodes(out var gridSize);
+        
+        if(!IsPositionInsideGrid(startPos, gridSize) || !IsPositionInsideGrid(endPos, gridSize))
+            return resultPath;
+            
+        var findPathJob = new PathFinding3DByBlockWeightJob()
         {
-            var findPathJob = new PathFinding3DByBlockWeightJob()
-            {
-                StartPos = new int3(startPos.x, startPos.y, startPos.z),
-                EndPos = new int3(endPos.x, endPos.y, endPos.z),
-                GridSize = new int3(gridSize.x, gridSize.y, gridSize.z),
-                CalculatedPath = path,
-                WeightsArray = weightsArray,
-            };
+            StartPos = new int3(startPos.x, startPos.y, startPos.z),
+            EndPos = new int3(endPos.x, endPos.y, endPos.z),
+            GridSize = new int3(gridSize.x, gridSize.y, gridSize.z),
+            CalculatedPath = path,
+            WeightsArray = weightsArray,
+        };
         
-            var handle = findPathJob.Schedule();
-            handle.Complete();
+        var handle = findPathJob.Schedule();
+        handle.Complete();
 
-            Debug.Log($"Path: {path.Length}");
-        
-            foreach (var pos in path)
-            {
-                resultPath.Add(new Vector3Int(pos.x, pos.y, pos.z));
-            }
+        foreach (var pos in path)
+        {
+            resultPath.Add(new Vector3Int(pos.x, pos.y, pos.z));
         }
-
+            
         resultPath.Reverse();
+
         return resultPath;
+    }
+    
+    private static bool IsPositionInsideGrid(Vector3Int gridPos, Vector3Int gridSize)
+    {
+        return
+            gridPos.x >= 0 &&
+            gridPos.y >= 0 &&
+            gridPos.z >= 0 &&
+            gridPos.x < gridSize.x &&
+            gridPos.y < gridSize.y &&
+            gridPos.z < gridSize.z;
     }
     
     private static NativeArray<int> GetChunkGridAsNodes(out Vector3Int gridSize)
@@ -52,21 +64,6 @@ public static class AStarPathFinder
             blockWeights[index] = chunk.Grid.GetValue(pos).Data.PathFindTravelWeight;
         }
         
-        //Add some walls
-        Vector3Int[] wallPositions = new[]
-        {
-            new Vector3Int(0, 0, 1),
-            new Vector3Int(1, 0, 0),
-            new Vector3Int(1, 1, 1),
-            new Vector3Int(0, 1, 1),
-        };
-
-        foreach (var pos in wallPositions)
-        {
-            int index = CalculateIndex(pos, gridSize);
-            blockWeights[index] = 9999;
-        }
-
         return blockWeights;
     }
     
@@ -85,8 +82,8 @@ public static class AStarPathFinder
         
         for (int i = 0; i < path.Count - 1; i++)
         {
-            var a = path[i];
-            var b = path[i + 1];
+            var a = Vector3.one * 0.5f + path[i];
+            var b = Vector3.one * 0.5f + path[i + 1];
             
             Gizmos.DrawLine(a, b);
         }
