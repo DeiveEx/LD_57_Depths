@@ -6,6 +6,7 @@ public class World : MonoSingleton<World>
     [SerializeField] private ChunkRenderer _chunkRendererPrefab;
     [SerializeField] private Vector3Int _chunkSize = new (10, 10, 10);
     [SerializeField] private Vector3Int _chunkAmount = new (2, 2, 2);
+    [SerializeField] private BlockDataSO[] _blocks;
     [SerializeField] private Vector2Int _minMaxRoomAmount = new (1, 5);
     [SerializeField] private RoomDefinitionSO[] _roomDefinitions;
     
@@ -13,9 +14,27 @@ public class World : MonoSingleton<World>
     private Dictionary<Vector3Int, ChunkData> _chunks = new();
     private Dictionary<Vector3Int, ChunkRenderer> _chunkRenderers = new();
     private Dictionary<Vector3Int, RoomInstance> _rooms = new();
+    private Dictionary<BlockType, BlockDataSO> _blockDataDictionary = new();
+
+    private BlockInstance _emptyBlock;
+    private BlockInstance _invalidBlock;
 
     public BoundsInt WorldBounds => _worldBounds;
-    public Dictionary<Vector3Int, RoomInstance> Rooms => _rooms;
+    public IDictionary<Vector3Int, RoomInstance> Rooms => _rooms;
+    public IDictionary<Vector3Int, ChunkData> Chunks => _chunks;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        
+        foreach (var blockData in _blocks)
+        {
+            _blockDataDictionary[blockData.Type] = blockData;
+        }
+        
+        _invalidBlock = new BlockInstance(null);
+        _emptyBlock = new BlockInstance(_blockDataDictionary[BlockType.Empty]);
+    }
 
     public void GenerateNewWorld()
     {
@@ -44,8 +63,8 @@ public class World : MonoSingleton<World>
         }
         
         UpdateWorldBounds();
-        ConfigureBorders();
-        SpawnRooms();
+        // ConfigureBorders();
+        // SpawnRooms();
     }
 
     public void UpdateChunks()
@@ -64,8 +83,9 @@ public class World : MonoSingleton<World>
             return false;
 
         var localChunkPos = worldPos - chunkPos;
+        var newBlock = type == BlockType.Empty ? _emptyBlock : new BlockInstance(_blockDataDictionary[type]);
 
-        if (!chunk.Grid.TrySetValue(localChunkPos, type))
+        if (!chunk.Grid.TrySetValue(localChunkPos, newBlock))
             return false;
             
         chunk.IsModified = true;
@@ -73,19 +93,19 @@ public class World : MonoSingleton<World>
         return true;
     }
 
-    public BlockType GetBlock(Vector3Int worldPos)
+    public BlockInstance GetBlock(Vector3Int worldPos)
     {
         var chunkPos = GetChunkPosFromWorldPos(worldPos);
 
         if(!_chunks.TryGetValue(chunkPos, out var chunk))
-            return BlockType.None;
+            return _invalidBlock;
         
         var localChunkPos = worldPos - chunkPos;
 
-        if (!chunk.Grid.TryGetValue(localChunkPos, out var blockType))
-            return BlockType.None;
+        if (!chunk.Grid.TryGetValue(localChunkPos, out var block))
+            return _invalidBlock;
 
-        return blockType;
+        return block;
     }
 
     public Vector3Int GetGridPosFromWorldPos(Vector3 worldPos)
@@ -124,8 +144,7 @@ public class World : MonoSingleton<World>
         //Fill the chunk with rock blocks
         foreach (var pos in chunk.Grid.Bounds.allPositionsWithin)
         {
-            var type = BlockType.Rock;
-            chunk.Grid.SetValue(pos, type);
+            TrySetBlock(pos, BlockType.Rock);
         }
         
         chunkRenderer.Initialize(chunk);

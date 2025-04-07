@@ -25,7 +25,7 @@ public static class ChunkMeshHelper
 		{
 			//Get the neighbour block in the current direction
 			var neighbourBlockPosition = chunk.WorldPosition + localChunkPosition + direction.GetVector();
-			var neighbourBlockType = World.Instance.GetBlock(neighbourBlockPosition);
+			var neighbourBlockType = World.Instance.GetBlock(neighbourBlockPosition).Type;
 
 			//Check if we should render a face for the current direction in this voxel.
 			if (neighbourBlockType == BlockType.Empty)

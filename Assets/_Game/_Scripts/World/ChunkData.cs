@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ChunkData
 {
-	public GenericGrid<BlockType> Grid;
+	public GenericGrid<BlockInstance> Grid;
 	public Vector3Int ChunkSize;
 	public Vector3Int WorldPosition;
 
@@ -25,7 +25,7 @@ public class ChunkData
 
 		foreach (var pos in Grid.Bounds.allPositionsWithin)
 		{
-			ChunkMeshHelper.GenerateMeshDataForPosition(this, pos, meshData, Grid.GetValue(pos));
+			ChunkMeshHelper.GenerateMeshDataForPosition(this, pos, meshData, Grid.GetValue(pos).Data.Type);
 		}
 		
 		return meshData;
