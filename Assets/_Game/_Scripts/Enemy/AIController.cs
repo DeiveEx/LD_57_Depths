@@ -9,6 +9,7 @@ public class AIController : MonoBehaviour
 {
     [SerializeField] private BehaviorGraphAgent _behaviorAgent;
     [SerializeField] private float _moveSpeed = 1;
+    [SerializeField] private float _digSpeed = 1;
 
     private Vector3Int _housePosition;
     private List<Vector3Int> _currentPath;
@@ -42,17 +43,40 @@ public class AIController : MonoBehaviour
 
     private IEnumerator FollowPathRoutine()
     {
-        for (int i = 0; i < _currentPath.Count; i++)
-        {
-            var targetPos = _currentPath[i];
-            
-            var tween = transform.DOMove(World.GetWorldCenterPosition(targetPos), 1f / _moveSpeed)
-                .Play();
+        int pathIndex = 0;
 
-            yield return new WaitForSeconds(1f / _moveSpeed);
+        while (pathIndex < _currentPath.Count)
+        {
+            var targetPos = _currentPath[pathIndex];
+            
+            //Dig if target pos is a wall
+            var targetBlock = World.GetBlock(targetPos);
+
+            if (targetBlock.Type == BlockType.Rock)
+            {
+                Dig(targetPos);
+                yield return new WaitForSeconds(1f / _digSpeed);
+            }
+            else
+            {
+                Move(targetPos);
+                pathIndex++;
+                yield return new WaitForSeconds(1f / _moveSpeed);
+            }
         }
 
         _currentPath = null;
+    }
+
+    private void Dig(Vector3Int targetPos)
+    {
+        World.TrySetBlock(targetPos, BlockType.Empty);
+    }
+
+    private void Move(Vector3Int targetPos)
+    {
+        var tween = transform.DOMove(World.GetWorldCenterPosition(targetPos), 1f / _moveSpeed)
+            .Play();
     }
 
     private void OnDrawGizmosSelected()
