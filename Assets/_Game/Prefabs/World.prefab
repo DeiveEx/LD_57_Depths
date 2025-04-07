@@ -49,6 +49,10 @@ MonoBehaviour:
   _chunkRendererPrefab: {fileID: 597123712799375804, guid: ff038210275b60c40af4a9ef3646c224, type: 3}
   _chunkSize: {x: 25, y: 10, z: 25}
   _chunkAmount: {x: 1, y: 1, z: 1}
+  _blocks:
+  - {fileID: 11400000, guid: 7d65c31c10fa9de49bfec98466fbdf55, type: 2}
+  - {fileID: 11400000, guid: e139d4adb9c745147a6c69adafc9c41d, type: 2}
+  - {fileID: 11400000, guid: 0b090955c3d329644ba2db95cde31224, type: 2}
   _minMaxRoomAmount: {x: 5, y: 5}
   _roomDefinitions:
   - {fileID: 11400000, guid: 27848a8875db0fc4484a6011d623ff3a, type: 2}
