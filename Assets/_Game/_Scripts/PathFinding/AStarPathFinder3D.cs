@@ -12,9 +12,10 @@ public class AStarPathFinder3D : MonoBehaviour
         var findPathJob = new FindPathJob()
         {
             StartPos = new int2(0, 0),
-            EndPos = new int2(3, 1),
-            GridSize = new int2(4, 4),
-            Path = path,
+            EndPos = new int2(1, 1),
+            GridSize = new int2(2, 2),
+            CalculatedPath = path,
+            AllowDiagonal = false,
         };
         
         var handle = findPathJob.Schedule();

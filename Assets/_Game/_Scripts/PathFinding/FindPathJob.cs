@@ -31,7 +31,8 @@ public struct FindPathJob : IJob
     public int2 StartPos;
     public int2 EndPos;
     public int2 GridSize;
-    public NativeList<int2> Path;
+    public bool AllowDiagonal;
+    public NativeList<int2> CalculatedPath;
 
     #endregion
 
@@ -89,7 +90,7 @@ public struct FindPathJob : IJob
         TraverseGrid(nodeArray, openList, closedList, endNodeIndex, gridSize);
 
         //If path has a length of zero, then there's not path
-        RetracePath(nodeArray, Path, endNodeIndex);
+        RetracePath(nodeArray, CalculatedPath, endNodeIndex);
 
         nodeArray.Dispose();
         openList.Dispose();
@@ -175,8 +176,14 @@ public struct FindPathJob : IJob
     {
         var xDistance = math.abs(posA.x - posB.x);
         var yDistance = math.abs(posA.y - posB.y);
-        var remaining = math.abs(xDistance - yDistance);
-        return MOVE_COST_DIAGONAL * math.min(xDistance, yDistance) + MOVE_COST_STRAIGHT * remaining;
+        
+        if (AllowDiagonal)
+        {
+            var remaining = math.abs(xDistance - yDistance);
+            return MOVE_COST_DIAGONAL * math.min(xDistance, yDistance) + MOVE_COST_STRAIGHT * remaining;
+        }
+
+        return (xDistance + yDistance) * MOVE_COST_STRAIGHT;
     }
 
     private int GetLowestCostFNodeIndex(NativeList<int> openList, NativeArray<PathNode> nodeArray)
@@ -205,7 +212,7 @@ public struct FindPathJob : IJob
 
     private void RetracePath(NativeArray<PathNode> nodeArray, NativeList<int2> path, int endNodeIndex)
     {
-        Path.Clear();
+        CalculatedPath.Clear();
         var endNode = nodeArray[endNodeIndex];
 
         if (endNode.CameFromNodeIndex == -1)
@@ -224,16 +231,20 @@ public struct FindPathJob : IJob
 
     private NativeArray<int2> GetNeighboursOffsetArray()
     {
-        NativeArray<int2> offsets = new(8, Allocator.Temp);
+        NativeArray<int2> offsets = new(AllowDiagonal ? 8 : 4, Allocator.Temp);
         
         offsets[0] = new int2(-1, 0);
         offsets[1] = new int2(+1, 0);
         offsets[2] = new int2(0, -1);
         offsets[3] = new int2(0, +1);
-        offsets[4] = new int2(-1, -1);
-        offsets[5] = new int2(-1, +1);
-        offsets[6] = new int2(+1, -1);
-        offsets[7] = new int2(+1, +1);
+
+        if (AllowDiagonal)
+        {
+            offsets[4] = new int2(-1, -1);
+            offsets[5] = new int2(-1, +1);
+            offsets[6] = new int2(+1, -1);
+            offsets[7] = new int2(+1, +1);
+        }
 
         return offsets;
     }
