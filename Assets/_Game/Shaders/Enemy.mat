@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_BlockGraph
+  m_Name: Enemy
   m_Shader: {fileID: -6465566751694194690, guid: f791f34f2a0afd641aafb7b121e90ebb, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -59,6 +59,7 @@ Material:
     - _QueueOffset: 0
     - _UseAlpha: 1
     m_Colors:
+    - _Color: {r: 1, g: 0, b: 0, a: 1}
     - _MinMaxDistance: {r: 0.95, g: 0, b: 0, a: 0}
     - _PlayerPos: {r: 0.13, g: 0, b: 0, a: 0}
     - _Visibility: {r: 1, g: 0, b: 0, a: 0}
