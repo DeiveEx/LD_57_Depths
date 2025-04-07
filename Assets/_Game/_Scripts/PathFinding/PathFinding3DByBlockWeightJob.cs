@@ -21,7 +21,7 @@ public struct BlockNode
 }
 
 [BurstCompile]
-public struct FindPath3DByBlockWeightJob : IJob
+public struct PathFinding3DByBlockWeightJob : IJob
 {
     #region Fields
     

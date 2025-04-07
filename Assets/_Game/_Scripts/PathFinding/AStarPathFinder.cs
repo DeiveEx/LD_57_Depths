@@ -14,7 +14,7 @@ public static class AStarPathFinder
         using (var path = new NativeList<int3>(Allocator.TempJob))
         using (var weightsArray = GetChunkGridAsNodes(out var gridSize))
         {
-            var findPathJob = new FindPath3DByBlockWeightJob()
+            var findPathJob = new PathFinding3DByBlockWeightJob()
             {
                 StartPos = new int3(startPos.x, startPos.y, startPos.z),
                 EndPos = new int3(endPos.x, endPos.y, endPos.z),

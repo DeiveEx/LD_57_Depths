@@ -19,7 +19,7 @@ public class AStarPathFinderTester : MonoBehaviour
     {
         NativeList<int2> path = new(Allocator.TempJob);
         
-        var findPathJob = new FindPath2DJob()
+        var findPathJob = new PathFinding2DJob()
         {
             StartPos = new int2(0, 0),
             EndPos = new int2(1, 1),
@@ -43,7 +43,7 @@ public class AStarPathFinderTester : MonoBehaviour
     {
         NativeList<int3> path = new(Allocator.TempJob);
         
-        var findPathJob = new FindPath3DJob()
+        var findPathJob = new PathFinding3DJob()
         {
             StartPos = new int3(0, 0, 0),
             EndPos = new int3(1, 1, 1),
