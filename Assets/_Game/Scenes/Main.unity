@@ -876,6 +876,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfdfb7371a185f745bad31e5050b1afc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1152599217392555829 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 806345593618343922, guid: 777815c7f9b6dac4eb02d70e32305f30, type: 3}
+  m_PrefabInstance: {fileID: 1152599217392555827}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 397e45edf7362fb4db89328a4a9291d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4338409511709174224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -968,6 +979,10 @@ PrefabInstance:
       propertyPath: _playerScore
       value: 
       objectReference: {fileID: 1152599217392555828}
+    - target: {fileID: 4963247665440692134, guid: 46cfb92b2a276d1419941e18265c7a0a, type: 3}
+      propertyPath: _playerHealth
+      value: 
+      objectReference: {fileID: 1152599217392555829}
     - target: {fileID: 5171525621843516991, guid: 46cfb92b2a276d1419941e18265c7a0a, type: 3}
       propertyPath: m_Name
       value: Canvas
