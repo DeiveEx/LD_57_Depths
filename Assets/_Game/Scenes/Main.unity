@@ -709,6 +709,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8459977763537029473, guid: 8949c9717551e7d4ab428a7c71ef1b94, type: 3}
+      propertyPath: _goldSpawnAmount
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -815,10 +819,6 @@ PrefabInstance:
     - target: {fileID: 4677935702473796513, guid: 777815c7f9b6dac4eb02d70e32305f30, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4677935702473796513, guid: 777815c7f9b6dac4eb02d70e32305f30, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7872716632489867908, guid: 777815c7f9b6dac4eb02d70e32305f30, type: 3}
       propertyPath: m_LocalPosition.x

@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Transform _avatar;
     [SerializeField] private float _moveSpeed = 1;
+    [SerializeField] private float _moveRotateAngle = 1;
+    [SerializeField] private Ease _moveRotateEase;
     [SerializeField] private float _digSpeed = 1;
 
     private InputState _inputState;
@@ -28,7 +30,8 @@ public class PlayerController : MonoBehaviour
         TryMove();
         TryDig();
         
-        _avatar.forward = _lookDir;
+        // _avatar.forward = _lookDir;
+        _avatar.localScale = new Vector3(Mathf.Sign(_lookDir.x), 1, 1);
     }
     
     public void Teleport(Vector3Int targetPos)
@@ -96,6 +99,12 @@ public class PlayerController : MonoBehaviour
         }
         
         transform.DOMove(World.GetWorldCenterPosition(targetPos), 1f / _moveSpeed)
+            .Play();
+
+        
+        transform.DOLocalRotate(Vector3.zero, 1f / _moveSpeed)
+            .From(Vector3.forward * (_moveRotateAngle * Mathf.Sign(_lookDir.x)))
+            .SetEase(_moveRotateEase)
             .Play();
         
         _lastActionTime = Time.time;
