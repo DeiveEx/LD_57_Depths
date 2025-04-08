@@ -72,13 +72,10 @@ public static class PathFinderService
         return (pos.x * gridSize.y * gridSize.z) + (pos.y * gridSize.z) + pos.z;
     }
 
-    public static void DrawPathGizmos(List<Vector3Int> path, Color? color = null)
+    public static void DrawPathGizmos(List<Vector3Int> path)
     {
         if(path == null || path.Count == 0)
             return;
-        
-        color ??= Color.red;
-        Gizmos.color = color.Value;
         
         for (int i = 0; i < path.Count - 1; i++)
         {

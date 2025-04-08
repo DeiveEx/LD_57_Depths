@@ -7,9 +7,10 @@ using Unity.Properties;
 using Random = UnityEngine.Random;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "Choose random 2D point around House", story: "Choose random 2D point around House", category: "Action", id: "8496bc5ebda6d7ab43c72cc3bf6f0ce9")]
+[NodeDescription(name: "Choose random 2D point around Point", story: "Choose random 2D point around [Point]", category: "Action", id: "8496bc5ebda6d7ab43c72cc3bf6f0ce9")]
 public partial class ChooseRandomPositionAround2DCircleAction : Action
 {
+    [SerializeReference] public BlackboardVariable<Vector3Int> Point;
     [SerializeReference] public BlackboardVariable<float> Range;
     [SerializeReference] public BlackboardVariable<AIController> Controller;
     [SerializeReference] public BlackboardVariable<List<Vector3Int>> OutputPath;
@@ -17,7 +18,7 @@ public partial class ChooseRandomPositionAround2DCircleAction : Action
     protected override Status OnStart()
     {
         var pointInCircle = Random.insideUnitCircle * Range;
-        var intPoint = Controller.Value.HousePosition + new Vector3Int(
+        var intPoint = Point + new Vector3Int(
             Mathf.FloorToInt(pointInCircle.x), 
             0, 
             Mathf.FloorToInt(pointInCircle.y));

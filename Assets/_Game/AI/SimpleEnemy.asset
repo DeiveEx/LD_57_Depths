@@ -20,7 +20,9 @@ MonoBehaviour:
   - rid: 8804200994667757743
   - rid: 8804200977056923944
   - rid: 8804200994667757668
-  m_VersionTimestamp: 638796514274311585
+  - rid: 8804201000709128303
+  - rid: 8804201000709128325
+  m_VersionTimestamp: 638796565175815315
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: 4768977017071139718}
@@ -67,6 +69,26 @@ MonoBehaviour:
         IsExposed: 1
         m_IsShared: 0
         m_Value: {fileID: 0}
+    - rid: 8804201000709128303
+      type: {class: 'TypedVariableModel`1[[UnityEngine.Vector3Int, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 15025539394868091804
+          m_Value1: 13465714209362926972
+        Name: HousePosition
+        IsExposed: 0
+        m_IsShared: 0
+        m_Value: {x: 0, y: 0, z: 0}
+    - rid: 8804201000709128325
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 11886027779710845638
+          m_Value1: 1111952512150182295
+        Name: RoamRange
+        IsExposed: 0
+        m_IsShared: 0
+        m_Value: 0
 --- !u!114 &-7918577187824369308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,16 +102,16 @@ MonoBehaviour:
   m_Name: SimpleEnemy
   m_EditorClassIdentifier: 
   Graphs:
-  - rid: 8804201000709128287
+  - rid: 8804201000709128327
   RootGraph:
-    rid: 8804201000709128287
+    rid: 8804201000709128327
   m_DebugInfo: {fileID: 5967799416750773728}
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 8804201000709128287
+    - rid: 8804201000709128327
       type: {class: BehaviorGraphModule, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         AuthoringAssetID:
@@ -97,89 +119,91 @@ MonoBehaviour:
           m_Value1: 16578119269905510714
         m_DebugInfo: {fileID: 0}
         Root:
-          rid: 8804201000709128288
+          rid: 8804201000709128328
         BlackboardReference:
-          rid: 8804201000709128289
+          rid: 8804201000709128329
         BlackboardGroupReferences: []
         ProcessedNodes: []
         m_RunningNodes: []
         m_NodesToEnd:
-          rid: 8804201000709128290
+          rid: 8804201000709128330
         m_EndedNodes:
-          rid: 8804201000709128291
-        m_VersionTimestamp: 638796514274311585
-    - rid: 8804201000709128288
+          rid: 8804201000709128331
+        m_VersionTimestamp: 638796565090037061
+    - rid: 8804201000709128328
       type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
           m_Value0: 7637486332374545146
           m_Value1: 6749826424164305673
         Graph:
-          rid: 8804201000709128287
+          rid: 8804201000709128327
         m_Parent:
           rid: -2
         m_Child:
-          rid: 8804201000709128292
+          rid: 8804201000709128332
         Repeat: 1
-    - rid: 8804201000709128289
+    - rid: 8804201000709128329
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Blackboard:
-          rid: 8804201000709128293
+          rid: 8804201000709128333
         m_Source: {fileID: 4768977017071139718}
-    - rid: 8804201000709128290
+    - rid: 8804201000709128330
       type: {class: 'Stack`1[[Unity.Behavior.Node, Unity.Behavior]]', ns: System.Collections.Generic, asm: mscorlib}
       data: 
-    - rid: 8804201000709128291
+    - rid: 8804201000709128331
       type: {class: 'HashSet`1[[Unity.Behavior.Node, Unity.Behavior]]', ns: System.Collections.Generic, asm: System.Core}
       data: 
-    - rid: 8804201000709128292
+    - rid: 8804201000709128332
       type: {class: RandomComposite, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
           m_Value0: 1111285547574030398
           m_Value1: 16321467198612109165
         Graph:
-          rid: 8804201000709128287
+          rid: 8804201000709128327
         m_Parent:
-          rid: 8804201000709128288
+          rid: 8804201000709128328
         m_Children:
-        - rid: 8804201000709128294
-        - rid: 8804201000709128295
-    - rid: 8804201000709128293
+        - rid: 8804201000709128334
+        - rid: 8804201000709128335
+    - rid: 8804201000709128333
       type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Variables:
-        - rid: 8804201000709128296
-        - rid: 8804201000709128297
-        - rid: 8804201000709128298
-        - rid: 8804201000709128299
-    - rid: 8804201000709128294
+        - rid: 8804201000709128336
+        - rid: 8804201000709128337
+        - rid: 8804201000709128338
+        - rid: 8804201000709128339
+        - rid: 8804201000709128340
+        - rid: 8804201000709128341
+    - rid: 8804201000709128334
       type: {class: WaitAction, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
           m_Value0: 14107442122029287286
           m_Value1: 9254672882282297751
         Graph:
-          rid: 8804201000709128287
+          rid: 8804201000709128327
         m_Parent:
-          rid: 8804201000709128292
+          rid: 8804201000709128332
         SecondsToWait:
-          rid: 8804201000709128297
-    - rid: 8804201000709128295
+          rid: 8804201000709128337
+    - rid: 8804201000709128335
       type: {class: SequenceComposite, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
           m_Value0: 20517444474058199
           m_Value1: 11633983981937564672
         Graph:
-          rid: 8804201000709128287
+          rid: 8804201000709128327
         m_Parent:
-          rid: 8804201000709128292
+          rid: 8804201000709128332
         m_Children:
-        - rid: 8804201000709128300
-        - rid: 8804201000709128301
-    - rid: 8804201000709128296
+        - rid: 8804201000709128342
+        - rid: 8804201000709128343
+    - rid: 8804201000709128336
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -187,7 +211,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 0}
-    - rid: 8804201000709128297
+    - rid: 8804201000709128337
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -195,7 +219,7 @@ MonoBehaviour:
           m_Value1: 7457552564979932988
         Name: WaitDelay
         m_Value: 1
-    - rid: 8804201000709128298
+    - rid: 8804201000709128338
       type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.Vector3Int, UnityEngine.CoreModule]], mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -203,7 +227,7 @@ MonoBehaviour:
           m_Value1: 3834595652490894022
         Name: CurrentPath
         m_Value: []
-    - rid: 8804201000709128299
+    - rid: 8804201000709128339
       type: {class: 'BlackboardVariable`1[[AIController, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -211,44 +235,54 @@ MonoBehaviour:
           m_Value1: 17977451046411512278
         Name: AiController
         m_Value: {fileID: 0}
-    - rid: 8804201000709128300
+    - rid: 8804201000709128340
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Vector3Int, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15025539394868091804
+          m_Value1: 13465714209362926972
+        Name: HousePosition
+        m_Value: {x: 0, y: 0, z: 0}
+    - rid: 8804201000709128341
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11886027779710845638
+          m_Value1: 1111952512150182295
+        Name: RoamRange
+        m_Value: 0
+    - rid: 8804201000709128342
       type: {class: ChooseRandomPositionAround2DCircleAction, ns: , asm: Assembly-CSharp}
       data:
         ID:
           m_Value0: 4856427174211639561
           m_Value1: 11884140570811148629
         Graph:
-          rid: 8804201000709128287
+          rid: 8804201000709128327
         m_Parent:
-          rid: 8804201000709128295
+          rid: 8804201000709128335
+        Point:
+          rid: 8804201000709128340
         Range:
-          rid: 8804201000709128302
+          rid: 8804201000709128341
         Controller:
-          rid: 8804201000709128299
+          rid: 8804201000709128339
         OutputPath:
-          rid: 8804201000709128298
-    - rid: 8804201000709128301
+          rid: 8804201000709128338
+    - rid: 8804201000709128343
       type: {class: FollowGridPathAction, ns: , asm: Assembly-CSharp}
       data:
         ID:
           m_Value0: 13524622549871185300
           m_Value1: 8207604011217506175
         Graph:
-          rid: 8804201000709128287
+          rid: 8804201000709128327
         m_Parent:
-          rid: 8804201000709128295
+          rid: 8804201000709128335
         Path:
-          rid: 8804201000709128298
+          rid: 8804201000709128338
         Controller:
-          rid: 8804201000709128299
-    - rid: 8804201000709128302
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 0
-          m_Value1: 0
-        Name: 
-        m_Value: 5
+          rid: 8804201000709128339
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,7 +304,7 @@ MonoBehaviour:
   - rid: 8804200977056924000
   - rid: 8804201000709128275
   - rid: 8804201000709128284
-  m_VersionTimestamp: 638796514274311585
+  m_VersionTimestamp: 638796565090037061
   m_DebugInfo: {fileID: 5967799416750773728}
   m_RuntimeGraph: {fileID: -7918577187824369308}
   AssetID:
@@ -307,12 +341,17 @@ MonoBehaviour:
           PublicKeyToken=b77a5c561934e089
       Tooltip: 
     NamedChildren: []
-  - Name: Choose random 2D point around House
-    Story: Choose random 2D point around House
+  - Name: Choose random 2D point around Point
+    Story: 'Choose random 2D point around [Point]'
     RuntimeTypeID:
       m_Value0: 12382549032746915460
       m_Value1: 16792919979961665347
     Variables:
+    - Name: Point
+      Type:
+        m_SerializableType: UnityEngine.Vector3Int, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      Tooltip: 
     - Name: Range
       Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -519,8 +558,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 8804200977056923907
       type: {class: StartNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
@@ -674,6 +711,7 @@ MonoBehaviour:
           m_Value0: 12382549032746915460
           m_Value1: 16792919979961665347
         m_FieldValues:
+        - rid: 8804201000709128322
         - rid: 8804200977056924026
         - rid: 8804200994667757737
         - rid: 8804200994667757686
@@ -705,7 +743,7 @@ MonoBehaviour:
         LocalValue:
           rid: 8804200977056924028
         LinkedVariable:
-          rid: -2
+          rid: 8804201000709128326
     - rid: 8804200977056924028
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -904,6 +942,45 @@ MonoBehaviour:
         m_NodeModel:
           rid: 8804201000709128284
         m_Connections: []
+    - rid: 8804201000709128322
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: Point
+        Type:
+          m_SerializableType: UnityEngine.Vector3Int, UnityEngine.CoreModule, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 8804201000709128323
+        LinkedVariable:
+          rid: 8804201000709128324
+    - rid: 8804201000709128323
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Vector3Int, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {x: 0, y: 0, z: 0}
+    - rid: 8804201000709128324
+      type: {class: 'TypedVariableModel`1[[UnityEngine.Vector3Int, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 15025539394868091804
+          m_Value1: 13465714209362926972
+        Name: HousePosition
+        IsExposed: 0
+        m_IsShared: 0
+        m_Value: {x: 0, y: 0, z: 0}
+    - rid: 8804201000709128326
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 11886027779710845638
+          m_Value1: 1111952512150182295
+        Name: RoamRange
+        IsExposed: 0
+        m_IsShared: 0
+        m_Value: 0
 --- !u!114 &4768977017071139718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -916,7 +993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: SimpleEnemy Blackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 638796514274311585
+  VersionTimestamp: 638796565175815315
   AssetID:
     m_Value0: 7216471033766583241
     m_Value1: 16578119269905510714
@@ -926,6 +1003,8 @@ MonoBehaviour:
     - rid: 8804200977056924024
     - rid: 8804200994667757685
     - rid: 8804200994667757763
+    - rid: 8804201000709128321
+    - rid: 8804201000709128344
   m_SharedBlackboardVariableGuids: []
   references:
     version: 2
@@ -962,6 +1041,22 @@ MonoBehaviour:
           m_Value1: 17977451046411512278
         Name: AiController
         m_Value: {fileID: 0}
+    - rid: 8804201000709128321
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Vector3Int, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15025539394868091804
+          m_Value1: 13465714209362926972
+        Name: HousePosition
+        m_Value: {x: 0, y: 0, z: 0}
+    - rid: 8804201000709128344
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11886027779710845638
+          m_Value1: 1111952512150182295
+        Name: RoamRange
+        m_Value: 0
 --- !u!114 &5967799416750773728
 MonoBehaviour:
   m_ObjectHideFlags: 0

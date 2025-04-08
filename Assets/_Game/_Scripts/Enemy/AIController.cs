@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -10,19 +9,22 @@ public class AIController : MonoBehaviour
     [SerializeField] private BehaviorGraphAgent _behaviorAgent;
     [SerializeField] private float _moveSpeed = 1;
     [SerializeField] private float _digSpeed = 1;
+    [SerializeField] private float _maxRoamDistance = 1;
 
     private Vector3Int _housePosition;
     private List<Vector3Int> _currentPath;
     
     public Vector3Int CurrentGridPos => World.GetGridPosFromWorldPos(transform.position);
     public bool IsFollowingPath => _currentPath != null;
-    public Vector3Int HousePosition => _housePosition;
+    public float MaxRoamDistance => _maxRoamDistance;
 
     private World World => World.Instance;
 
     private void Awake()
     {
         _housePosition = CurrentGridPos;
+        _behaviorAgent.BlackboardReference.SetVariableValue("HousePosition", _housePosition);
+        _behaviorAgent.BlackboardReference.SetVariableValue("RoamRange", _maxRoamDistance);
         
         //Right now apparently the only way to control when the BehaviorAgent starts is to disable the
         //component on the GameObject and the enable it by code...
@@ -81,6 +83,16 @@ public class AIController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if(!Application.isPlaying)
+            return;
+
+        Gizmos.color = Color.red;
+        
         PathFinderService.DrawPathGizmos(_currentPath);
+        var housePos = World.Instance.GetWorldCenterPosition(_housePosition);
+        Gizmos.DrawWireSphere(housePos, 0.25f);
+        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, housePos);
     }
 }
