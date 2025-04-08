@@ -38,7 +38,7 @@ public static class BoundsIntExtensions
         return bounds.size.x * bounds.size.y * bounds.size.z;
     }
     
-    public static Vector3Int GetRandomPosition(this BoundsInt bounds)
+    public static Vector3Int GetRandomPositionWithin(this BoundsInt bounds)
     {
         int x = Random.Range(bounds.x, bounds.xMax);
         int y = Random.Range(bounds.y, bounds.yMax);

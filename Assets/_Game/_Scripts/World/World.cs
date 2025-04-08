@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class World : MonoSingleton<World>
 {
@@ -9,6 +11,9 @@ public class World : MonoSingleton<World>
     [SerializeField] private BlockDataSO[] _blocks;
     [SerializeField] private Vector2Int _minMaxRoomAmount = new (1, 5);
     [SerializeField] private RoomDefinitionSO[] _roomDefinitions;
+    [Range(0, 100)]
+    [SerializeField] private float _goldSpawnAmount = 10f;
+    [SerializeField] private GameObject _goldPrefab;
     
     private BoundsInt _worldBounds;
     private Dictionary<Vector3Int, ChunkData> _chunks = new();
@@ -65,6 +70,7 @@ public class World : MonoSingleton<World>
         UpdateWorldBounds();
         ConfigureBorders();
         SpawnRooms();
+        SpawnGold();
     }
 
     public void UpdateChunks()
@@ -211,6 +217,23 @@ public class World : MonoSingleton<World>
         }
 
         Debug.Log($"Spawned {_rooms.Count}/{roomCount} rooms");
+    }
+
+    private void SpawnGold()
+    {
+        var goldAmount = Mathf.FloorToInt(_worldBounds.GetPositionsCount() * (_goldSpawnAmount / 100f));
+        Debug.Log($"Trying to spawn {goldAmount} gold");
+
+        for (int i = 0; i < goldAmount; i++)
+        {
+            Vector3Int pos = _worldBounds.GetRandomPositionWithin();
+            var block = GetBlock(pos);
+            
+            if(block.Type == BlockType.None || block.Type == BlockType.Indestructible)
+                continue;
+            
+            var gold = Instantiate(_goldPrefab, GetWorldCenterPosition(pos), Quaternion.identity);
+        }
     }
     
     private void OnDrawGizmosSelected()

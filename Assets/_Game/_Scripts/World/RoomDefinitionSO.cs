@@ -64,7 +64,7 @@ public class RoomDefinitionSO : ScriptableObject
             
             do
             {
-                position = room.Bounds.GetRandomPosition();
+                position = room.Bounds.GetRandomPositionWithin();
             }
             while(occupiedPositions.Contains(position));
 
